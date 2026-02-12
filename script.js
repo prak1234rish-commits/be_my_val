@@ -7,10 +7,10 @@
 // 3. Create an email template with variables: {{from_name}}, {{timestamp}}, {{session_id}}
 // 4. Replace the values below with your actual IDs from EmailJS dashboard
 const EMAILJS_CONFIG = {
-    enabled: false, // Set to true after configuration
-    serviceId: 'YOUR_SERVICE_ID',
-    templateId: 'YOUR_TEMPLATE_ID',
-    publicKey: 'YOUR_PUBLIC_KEY'
+    enabled: true,
+    serviceId: 'service_jscol8t',
+    templateId: 'template_4z6don2',
+    publicKey: 'f1Jytx3IU_81XPHZZ'
 };
 
 // ============================================
