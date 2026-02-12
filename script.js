@@ -14,10 +14,7 @@ let nickname = '';
 let interactionStartTime = null;
 let yesBtnScale = 1;
 let noBtnScale = 1;
-let hasEscaped = false; // Tracks if the button has started flying
-
-const MAX_YES_SCALE = 1.8;
-const MIN_NO_SCALE = 0.5;
+let hasEscaped = false;
 
 // DOM Elements
 const envelopeContainer = document.getElementById('envelopeContainer');
@@ -54,7 +51,7 @@ continueBtn.addEventListener('click', () => {
 });
 
 // ============================================
-// THE "NO" EVASION (REWRITTEN)
+// THE NO EVASION (THE ACTUAL WORKING VERSION)
 // ============================================
 document.addEventListener('mousemove', (e) => {
     if (questionScreen.classList.contains('hidden')) return;
@@ -66,12 +63,21 @@ document.addEventListener('mousemove', (e) => {
     const dist = Math.sqrt(Math.pow(e.clientX - bx, 2) + Math.pow(e.clientY - by, 2));
 
     if (dist < 100) {
-        escape(e.clientX, e.clientY);
+        moveButton(e.clientX, e.clientY);
     }
 });
 
-function escape(mouseX, mouseY) {
+function moveButton(mouseX, mouseY) {
     if (!interactionStartTime) interactionStartTime = Date.now();
+
+    // JAILBREAK: Move to body to fix the "off-screen" transform bug
+    if (!hasEscaped) {
+        document.body.appendChild(noButtonWrapper);
+        noButtonWrapper.style.position = 'fixed';
+        noButtonWrapper.style.zIndex = '10000';
+        noButtonWrapper.style.transition = 'none'; // Instant jumps only
+        hasEscaped = true;
+    }
 
     const bw = noButtonWrapper.offsetWidth;
     const bh = noButtonWrapper.offsetHeight;
@@ -80,30 +86,23 @@ function escape(mouseX, mouseY) {
     let newX, newY;
     let safe = false;
 
-    // Calculate a safe random spot
-    for (let i = 0; i < 30; i++) {
-        newX = Math.random() * (window.innerWidth - bw - 40) + 20;
-        newY = Math.random() * (window.innerHeight - bh - 40) + 20;
+    for (let i = 0; i < 50; i++) {
+        // Stay within viewport with 50px safety margin
+        newX = Math.random() * (window.innerWidth - bw - 100) + 50;
+        newY = Math.random() * (window.innerHeight - bh - 100) + 50;
 
-        // Check if spot is far from mouse and not on top of YES
         const distToMouse = Math.sqrt(Math.pow(newX + bw/2 - mouseX, 2) + Math.pow(newY + bh/2 - mouseY, 2));
         const overlapsYes = (
-            newX < yesRect.right + 50 &&
-            newX + bw > yesRect.left - 50 &&
-            newY < yesRect.bottom + 50 &&
-            newY + bh > yesRect.top - 50
+            newX < yesRect.right + 60 &&
+            newX + bw > yesRect.left - 60 &&
+            newY < yesRect.bottom + 60 &&
+            newY + bh > yesRect.top - 60
         );
 
-        if (distToMouse > 150 && !overlapsYes) {
+        if (distToMouse > 200 && !overlapsYes) {
             safe = true;
             break;
         }
-    }
-
-    // BREAK OUT: This is where we force it to become 'fixed' 
-    if (!hasEscaped) {
-        noButtonWrapper.style.position = 'fixed';
-        hasEscaped = true;
     }
 
     noButtonWrapper.style.left = `${newX}px`;
@@ -111,14 +110,14 @@ function escape(mouseX, mouseY) {
     noButtonWrapper.style.margin = '0';
 
     // Grow YES
-    if (yesBtnScale < MAX_YES_SCALE) {
+    if (yesBtnScale < 1.7) {
         yesBtnScale += 0.12;
         yesBtn.style.transform = `scale(${yesBtnScale})`;
     }
 
-    // Shrink NO (after 5s)
-    if (Date.now() - interactionStartTime > 5000 && noBtnScale > MIN_NO_SCALE) {
-        noBtnScale -= 0.06;
+    // Shrink NO
+    if (Date.now() - interactionStartTime > 5000 && noBtnScale > 0.5) {
+        noBtnScale -= 0.05;
         noBtn.style.transform = `scale(${noBtnScale})`;
     }
 }
