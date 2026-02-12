@@ -31,12 +31,12 @@ let yesBtnScale = 1;
 let noBtnScale = 1;
 
 // Constants
-const REPULSION_DISTANCE = 10; // Distance in pixels to trigger repulsion
-const YES_SCALE_INCREMENT = 0.05; // 10% growth per evasion
-const NO_SCALE_DECREMENT = 0.03; // 5% shrink per evasion after 5 seconds
+const REPULSION_DISTANCE = 100; // Distance in pixels to trigger repulsion
+const YES_SCALE_INCREMENT = 0.1; // 10% growth per evasion
+const NO_SCALE_DECREMENT = 0.05; // 5% shrink per evasion after 5 seconds
 const MAX_YES_SCALE = 1.8;
 const MIN_NO_SCALE = 0.5;
-const SHRINK_THRESHOLD = 7000; // 5 seconds in milliseconds
+const SHRINK_THRESHOLD = 5000; // 5 seconds in milliseconds
 
 // ============================================
 // DOM ELEMENTS
@@ -51,6 +51,7 @@ const questionScreen = document.getElementById('questionScreen');
 const buttonsContainer = document.getElementById('buttonsContainer');
 const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
+const noButtonWrapper = noBtn.closest('.button-wrapper');
 const interactionHint = document.getElementById('interactionHint');
 const successScene = document.getElementById('successScene');
 const successMessage = document.getElementById('successMessage');
@@ -181,13 +182,17 @@ function handleRepulsion() {
         let newX = noBtnCenterX + normalizedX * moveDistance;
         let newY = noBtnCenterY + normalizedY * moveDistance;
         
-        // Constrain to viewport with padding
-        const padding = 50;
-        const maxX = window.innerWidth - noBtnRect.width / 2 - padding;
-        const maxY = window.innerHeight - noBtnRect.height / 2 - padding;
+        // Constrain to viewport with padding - FIXED to actually work
+        const padding = 20;
+        const wrapperRect = noButtonWrapper.getBoundingClientRect();
+        const minX = padding + wrapperRect.width / 2;
+        const maxX = window.innerWidth - wrapperRect.width / 2 - padding;
+        const minY = padding + wrapperRect.height / 2;
+        const maxY = window.innerHeight - wrapperRect.height / 2 - padding;
         
-        newX = Math.max(padding + noBtnRect.width / 2, Math.min(newX, maxX));
-        newY = Math.max(padding + noBtnRect.height / 2, Math.min(newY, maxY));
+        // Clamp the values properly
+        newX = Math.max(minX, Math.min(newX, maxX));
+        newY = Math.max(minY, Math.min(newY, maxY));
         
         // Check if new position overlaps with Yes button
         const yesBtnRect = yesBtn.getBoundingClientRect();
@@ -200,19 +205,19 @@ function handleRepulsion() {
         );
         
         // If too close to Yes button, move in a different direction
-        if (distanceToYes < (yesBtnRect.width / 2 + noBtnRect.width / 2 + 30)) {
+        if (distanceToYes < (yesBtnRect.width / 2 + wrapperRect.width / 2 + 30)) {
             // Try perpendicular direction
             newX = noBtnCenterX + normalizedY * moveDistance;
             newY = noBtnCenterY - normalizedX * moveDistance;
             
-            // Constrain again
-            newX = Math.max(padding + noBtnRect.width / 2, Math.min(newX, maxX));
-            newY = Math.max(padding + noBtnRect.height / 2, Math.min(newY, maxY));
+            // Re-clamp to viewport
+            newX = Math.max(minX, Math.min(newX, maxX));
+            newY = Math.max(minY, Math.min(newY, maxY));
         }
         
-        // Apply position
-        noBtn.style.left = `${newX - noBtnRect.width / 2}px`;
-        noBtn.style.top = `${newY - noBtnRect.height / 2}px`;
+        // Apply position to wrapper - convert from center to left/top
+        noButtonWrapper.style.left = `${newX - wrapperRect.width / 2}px`;
+        noButtonWrapper.style.top = `${newY - wrapperRect.height / 2}px`;
         
         // Scale Yes button (grow)
         yesBtnScale = Math.min(yesBtnScale + YES_SCALE_INCREMENT, MAX_YES_SCALE);
@@ -237,15 +242,14 @@ function handleRepulsion() {
 // Initialize No button position
 function initializeNoButtonPosition() {
     setTimeout(() => {
-        const containerRect = buttonsContainer.getBoundingClientRect();
         const yesBtnRect = yesBtn.getBoundingClientRect();
         
-        // Position No button to the right of Yes
-        const initialX = yesBtnRect.right + 30 - containerRect.left;
-        const initialY = (containerRect.height - noBtn.offsetHeight) / 2;
+        // Position No button wrapper to the right of Yes in center of viewport
+        const initialX = yesBtnRect.right + 50;
+        const initialY = window.innerHeight / 2 - noButtonWrapper.offsetHeight / 2;
         
-        noBtn.style.left = `${initialX}px`;
-        noBtn.style.top = `${initialY}px`;
+        noButtonWrapper.style.left = `${initialX}px`;
+        noButtonWrapper.style.top = `${initialY}px`;
     }, 100);
 }
 
