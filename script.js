@@ -18,7 +18,7 @@ const EMAILJS_CONFIG = {
 // ============================================
 // Replace this URL with your own hosted GIF for reliability
 // Options: Upload to Imgur, ImgBB, or add to your GitHub repository
-const CELEBRATION_GIF_URL = 'https://media.giphy.com/media/g9582DNuQppxC/giphy.gif';
+const CELEBRATION_GIF_URL = 'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMW1rdHlsYmJ1YWwxN2tsdWJlY3MxZzJlYmducjczc3g4bzh6YzZkZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bAAnsIJUqwBKoqasx2/giphy.gif';
 
 // ============================================
 // STATE VARIABLES
@@ -31,12 +31,12 @@ let yesBtnScale = 1;
 let noBtnScale = 1;
 
 // Constants
-const REPULSION_DISTANCE = 100; // Distance in pixels to trigger repulsion
-const YES_SCALE_INCREMENT = 0.1; // 10% growth per evasion
-const NO_SCALE_DECREMENT = 0.05; // 5% shrink per evasion after 5 seconds
+const REPULSION_DISTANCE = 10; // Distance in pixels to trigger repulsion
+const YES_SCALE_INCREMENT = 0.05; // 10% growth per evasion
+const NO_SCALE_DECREMENT = 0.03; // 5% shrink per evasion after 5 seconds
 const MAX_YES_SCALE = 1.8;
 const MIN_NO_SCALE = 0.5;
-const SHRINK_THRESHOLD = 5000; // 5 seconds in milliseconds
+const SHRINK_THRESHOLD = 7000; // 5 seconds in milliseconds
 
 // ============================================
 // DOM ELEMENTS
