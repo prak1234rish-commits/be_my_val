@@ -77,9 +77,10 @@ body {
 
 .envelope {
     position: relative;
-    width: 280px;
-    height: 200px;
+    width: 320px;
+    height: 220px;
     perspective: 1000px;
+    filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.15));
 }
 
 .envelope-back,
@@ -87,23 +88,44 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #f5f5f0 0%, #e8e8df 100%);
-    border-radius: 8px;
+    background: linear-gradient(135deg, #fffef8 0%, #f8f6ed 50%, #f0ebe0 100%);
+    border-radius: 10px;
     box-shadow: 
-        0 10px 40px rgba(0, 0, 0, 0.08),
-        inset 0 1px 2px rgba(255, 255, 255, 0.5);
+        0 15px 50px rgba(0, 0, 0, 0.1),
+        inset 0 1px 3px rgba(255, 255, 255, 0.6),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .envelope-back {
     z-index: 1;
+    border: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+.envelope-back::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(230, 57, 70, 0.02) 2px,
+            rgba(230, 57, 70, 0.02) 4px
+        );
+    border-radius: 10px;
+    pointer-events: none;
 }
 
 .envelope-front {
     z-index: 3;
-    border-top: 100px solid transparent;
-    border-bottom: 100px solid #e8e8df;
-    border-left: 140px solid #e8e8df;
-    border-right: 140px solid #e8e8df;
+    border-top: 110px solid transparent;
+    border-bottom: 110px solid #f0ebe0;
+    border-left: 160px solid #f0ebe0;
+    border-right: 160px solid #f0ebe0;
     background: none;
 }
 
@@ -112,13 +134,26 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100px;
-    background: linear-gradient(to bottom, #d8d8ce 0%, #e8e8df 100%);
+    height: 110px;
+    background: linear-gradient(to bottom, #e8e4d8 0%, #f0ebe0 100%);
     transform-origin: top center;
     transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     z-index: 4;
     clip-path: polygon(0 0, 50% 60%, 100% 0);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 
+        0 6px 25px rgba(0, 0, 0, 0.12),
+        inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.envelope-flap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(212, 175, 55, 0.08), transparent 60%);
+    clip-path: polygon(0 0, 50% 60%, 100% 0);
 }
 
 .envelope-container.opening .envelope-flap {
@@ -144,25 +179,39 @@ body {
 .wax-circle {
     width: 60px;
     height: 60px;
-    background: radial-gradient(circle at 30% 30%, #E63946, #a72831);
+    background: radial-gradient(circle at 35% 35%, #ef4b56, #E63946 45%, #b82c36 70%, #8f1f28);
     border-radius: 50%;
     box-shadow: 
-        0 4px 15px rgba(230, 57, 70, 0.4),
-        inset 0 -2px 5px rgba(0, 0, 0, 0.2),
-        inset 0 2px 5px rgba(255, 255, 255, 0.2);
+        0 6px 20px rgba(230, 57, 70, 0.5),
+        0 2px 8px rgba(0, 0, 0, 0.3),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.3),
+        inset 0 3px 6px rgba(255, 255, 255, 0.3),
+        inset 0 0 15px rgba(255, 255, 255, 0.1);
     position: relative;
+    border: 1px solid rgba(139, 31, 40, 0.4);
 }
 
 .wax-circle::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 70%;
-    height: 70%;
-    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent);
+    top: 15%;
+    left: 25%;
+    width: 35%;
+    height: 35%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, transparent 70%);
     border-radius: 50%;
+    transform: rotate(-25deg);
+}
+
+.wax-circle::after {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        inset 0 0 8px rgba(0, 0, 0, 0.2),
+        inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .seal-letter {
@@ -171,22 +220,29 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     font-family: 'Dancing Script', cursive;
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 700;
     color: var(--gold);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.4),
+        0 0 10px rgba(212, 175, 55, 0.3),
+        1px 1px 0 rgba(0, 0, 0, 0.2);
     z-index: 1;
+    filter: brightness(1.1);
 }
 
 .envelope-label {
     position: absolute;
-    bottom: 30px;
+    bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
     font-family: 'Dancing Script', cursive;
-    font-size: 24px;
-    color: #666;
+    font-size: 28px;
+    font-weight: 600;
+    color: #8b7d6b;
     z-index: 2;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    letter-spacing: 2px;
 }
 
 .instruction-text {
@@ -345,6 +401,63 @@ body {
     padding: 20px;
 }
 
+.button-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button-wrapper:has(.btn-no) {
+    position: fixed;
+    transition: all 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Floating Emoji Animations */
+.emoji-float {
+    font-size: 40px;
+    position: absolute;
+    top: -50px;
+    animation: floatBounce 2s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.emoji-yes {
+    animation: floatBounce 2s ease-in-out infinite, gentleSway 3s ease-in-out infinite;
+}
+
+.emoji-no {
+    animation: floatBounce 2.5s ease-in-out infinite, smirkySway 3.5s ease-in-out infinite;
+}
+
+@keyframes floatBounce {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-10px) scale(1.1);
+    }
+}
+
+@keyframes gentleSway {
+    0%, 100% {
+        transform: rotate(-5deg);
+    }
+    50% {
+        transform: rotate(5deg);
+    }
+}
+
+@keyframes smirkySway {
+    0%, 100% {
+        transform: rotate(5deg) translateX(-3px);
+    }
+    50% {
+        transform: rotate(-5deg) translateX(3px);
+    }
+}
+
 /* Button Styles */
 .btn {
     padding: 16px 45px;
@@ -377,7 +490,6 @@ body {
     background: rgba(255, 255, 255, 0.6);
     color: #666;
     border: 2px solid rgba(230, 57, 70, 0.2);
-    position: absolute;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transform: scale(1);
     transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -513,8 +625,8 @@ body {
     }
 
     .envelope {
-        width: 220px;
-        height: 160px;
+        width: 260px;
+        height: 180px;
         transform: scale(0.9);
     }
 
@@ -531,6 +643,11 @@ body {
     .buttons-container {
         min-height: 120px;
         gap: 20px;
+    }
+
+    .emoji-float {
+        font-size: 32px;
+        top: -40px;
     }
 
     .success-title {
@@ -559,5 +676,10 @@ body {
     .btn {
         padding: 12px 28px;
         font-size: 14px;
+    }
+
+    .emoji-float {
+        font-size: 28px;
+        top: -35px;
     }
 }
