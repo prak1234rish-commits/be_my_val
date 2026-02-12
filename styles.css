@@ -408,9 +408,14 @@ body {
     align-items: center;
 }
 
+/* Updated No Button Wrapper */
 .button-wrapper:has(.btn-no) {
-    position: fixed;
-    transition: all 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative; /* Changed from fixed to relative */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 100;
+    /* Removed the transition: all 0.25s - it causes the sliding bug */
 }
 
 /* Floating Emoji Animations */
