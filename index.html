@@ -10,14 +10,12 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Parallax background layers -->
     <div class="parallax-bg">
         <div class="parallax-layer layer-1"></div>
         <div class="parallax-layer layer-2"></div>
         <div class="parallax-layer layer-3"></div>
     </div>
 
-    <!-- Envelope Scene -->
     <div class="envelope-container" id="envelopeContainer">
         <div class="envelope" id="envelope">
             <div class="envelope-back"></div>
@@ -25,18 +23,16 @@
             <div class="envelope-flap" id="envelopeFlap"></div>
             <div class="wax-seal">
                 <div class="wax-circle"></div>
-                <div class="seal-letter">R</div>
+                <div class="seal-letter">C</div>
             </div>
-            <div class="envelope-label">Confidential</div>
+            <div class="envelope-label">For You</div>
         </div>
         <p class="instruction-text">Click to open</p>
     </div>
 
-    <!-- Card Scene (Hidden initially) -->
     <div class="card-scene" id="cardScene">
         <div class="glass-card card-entrance">
             
-            <!-- Nickname Input Screen -->
             <div class="nickname-screen" id="nicknameScreen">
                 <h2 class="card-subtitle">Before we begin...</h2>
                 <p class="nickname-prompt">What should I call you?</p>
@@ -44,13 +40,18 @@
                 <button class="btn-continue" id="continueBtn">Continue</button>
             </div>
 
-            <!-- Question Screen -->
             <div class="question-screen hidden" id="questionScreen">
                 <h1 class="main-question">Will you be my Valentine?</h1>
                 
                 <div class="buttons-container" id="buttonsContainer">
-                    <button class="btn btn-yes" id="yesBtn">Yes</button>
-                    <button class="btn btn-no" id="noBtn">No</button>
+                    <div class="button-wrapper">
+                        <div class="emoji-float emoji-yes">🥹</div>
+                        <button class="btn btn-yes" id="yesBtn">Yes</button>
+                    </div>
+                    <div class="button-wrapper">
+                        <div class="emoji-float emoji-no">😏</div>
+                        <button class="btn btn-no" id="noBtn">No</button>
+                    </div>
                 </div>
 
                 <div class="interaction-hint" id="interactionHint">
@@ -61,7 +62,6 @@
         </div>
     </div>
 
-    <!-- Success Screen (Hidden initially) -->
     <div class="success-scene hidden" id="successScene">
         <div class="glass-card">
             <h2 class="success-title">You made my day! 🎉</h2>
@@ -80,10 +80,8 @@
         </div>
     </div>
 
-    <!-- Canvas for confetti -->
     <canvas id="confetti-canvas"></canvas>
 
-    <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="script.js"></script>
