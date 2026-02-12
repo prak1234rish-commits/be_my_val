@@ -3,48 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will You Be My Valentine? 💕</title>
+    <title>For You 💌</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Floating hearts background animation -->
-    <div class="hearts-container">
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
+    <!-- Parallax background layers -->
+    <div class="parallax-bg">
+        <div class="parallax-layer layer-1"></div>
+        <div class="parallax-layer layer-2"></div>
+        <div class="parallax-layer layer-3"></div>
     </div>
 
-    <!-- Envelope animation -->
-    <div class="envelope-wrapper" id="envelopeWrapper">
-        <div class="envelope">
-            <div class="envelope-flap"></div>
-            <div class="envelope-body"></div>
-            <div class="heart-seal">💕</div>
+    <!-- Envelope Scene -->
+    <div class="envelope-container" id="envelopeContainer">
+        <div class="envelope" id="envelope">
+            <div class="envelope-back"></div>
+            <div class="envelope-front"></div>
+            <div class="envelope-flap" id="envelopeFlap"></div>
+            <div class="wax-seal">
+                <div class="wax-circle"></div>
+                <div class="seal-letter">C</div>
+            </div>
+            <div class="envelope-label">For You</div>
         </div>
-        <p class="tap-hint">Tap to open</p>
+        <p class="instruction-text">Click to open</p>
     </div>
 
-    <!-- Main card (hidden initially) -->
-    <div class="card-container" id="cardContainer">
-        <div class="glass-card">
-            <h1 class="question">Will you be my Valentine?</h1>
+    <!-- Card Scene (Hidden initially) -->
+    <div class="card-scene" id="cardScene">
+        <div class="glass-card card-entrance">
             
-            <div class="buttons-container" id="buttonsContainer">
-                <button class="btn btn-yes" id="yesBtn">Yes! 💖</button>
-                <button class="btn btn-no" id="noBtn">No</button>
+            <!-- Nickname Input Screen -->
+            <div class="nickname-screen" id="nicknameScreen">
+                <h2 class="card-subtitle">Before we begin...</h2>
+                <p class="nickname-prompt">What should I call you?</p>
+                <input type="text" id="nicknameInput" class="nickname-input" placeholder="Enter your nickname" maxlength="20">
+                <button class="btn-continue" id="continueBtn">Continue</button>
             </div>
 
-            <!-- Success message (hidden initially) -->
-            <div class="success-message" id="successMessage">
-                <h2>Yay! 🎉</h2>
-                <p>I'm so happy! 💕</p>
-                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDhzaWQ3aTBwaHh5dDJ4ZWQ3YWJqaXN1YnRyYTJ2YWF3YjVqZHk2eCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/UWovhsciVgJqAzbQvl/giphy.gif" alt="Celebration" class="celebration-gif">
+            <!-- Question Screen -->
+            <div class="question-screen hidden" id="questionScreen">
+                <h1 class="main-question">Will you be my Valentine?</h1>
+                
+                <div class="buttons-container" id="buttonsContainer">
+                    <button class="btn btn-yes" id="yesBtn">Yes</button>
+                    <button class="btn btn-no" id="noBtn">No</button>
+                </div>
+
+                <div class="interaction-hint" id="interactionHint">
+                    Try clicking "No" if you dare...
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Success Screen (Hidden initially) -->
+    <div class="success-scene hidden" id="successScene">
+        <div class="glass-card">
+            <h2 class="success-title">You made my day! 🎉</h2>
+            <p class="success-message" id="successMessage">Thank you, [Name]!</p>
+            
+            <div class="gif-container" id="gifContainer">
+                <div class="gif-loader">Loading celebration...</div>
+            </div>
+
+            <div class="feedback-section">
+                <p class="feedback-text">
+                    If you didn't like this experience or have anything to report, 
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="feedback-link">click here</a>.
+                </p>
             </div>
         </div>
     </div>
 
+    <!-- Canvas for confetti -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
