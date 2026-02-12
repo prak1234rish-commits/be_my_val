@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine? 💕</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Floating hearts background animation -->
+    <div class="hearts-container">
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+    </div>
+
+    <!-- Envelope animation -->
+    <div class="envelope-wrapper" id="envelopeWrapper">
+        <div class="envelope">
+            <div class="envelope-flap"></div>
+            <div class="envelope-body"></div>
+            <div class="heart-seal">💕</div>
+        </div>
+        <p class="tap-hint">Tap to open</p>
+    </div>
+
+    <!-- Main card (hidden initially) -->
+    <div class="card-container" id="cardContainer">
+        <div class="glass-card">
+            <h1 class="question">Will you be my Valentine?</h1>
+            
+            <div class="buttons-container" id="buttonsContainer">
+                <button class="btn btn-yes" id="yesBtn">Yes! 💖</button>
+                <button class="btn btn-no" id="noBtn">No</button>
+            </div>
+
+            <!-- Success message (hidden initially) -->
+            <div class="success-message" id="successMessage">
+                <h2>Yay! 🎉</h2>
+                <p>I'm so happy! 💕</p>
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDhzaWQ3aTBwaHh5dDJ4ZWQ3YWJqaXN1YnRyYTJ2YWF3YjVqZHk2eCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/UWovhsciVgJqAzbQvl/giphy.gif" alt="Celebration" class="celebration-gif">
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
