@@ -1,1 +1,191 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be Mine?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink: #ff758c;
+            --dark-pink: #d63384;
+            --soft-bg: #fff5f6;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #fceef5 0%, #fff5f6 100%);
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+        }
+
+        #container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 3rem;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(255, 117, 140, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid white;
+            z-index: 10;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--dark-pink);
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            align-items: center;
+            min-height: 150px;
+        }
+
+        button {
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        #yesBtn {
+            background-color: #4caf50;
+            color: white;
+            z-index: 100;
+        }
+
+        #noBtn {
+            background-color: #f44336;
+            color: white;
+            position: relative;
+        }
+
+        .celebration {
+            display: none;
+            text-align: center;
+            animation: popIn 0.6s ease-out;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        img {
+            max-width: 320px;
+            border-radius: 30px;
+            margin-top: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <div id="quiz">
+            <h1 id="question">Will you be my Valentine? 🌹</h1>
+            <div class="buttons">
+                <button id="yesBtn">Yes</button>
+                <button id="noBtn">No</button>
+            </div>
+        </div>
+
+        <div id="celebration" class="celebration">
+            <h1>Yay! Best decision ever! ❤️</h1>
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueW9oZ3R3ZzR4eG5oZzR4eG5oZzR4eG5oZzR4eG5oZzR4eG5hZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l41lH4ADRtAYnGsLe/giphy.gif" alt="Success">
+        </div>
+    </div>
+
+    <script>
+      const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+const quiz = document.getElementById('quiz');
+const celebration = document.getElementById('celebration');
+
+let yesScale = 1;
+let noScale = 1;
+let startTime = null;
+
+const moveNoButton = () => {
+    if (!startTime) startTime = Date.now();
+
+    const yesRect = yesBtn.getBoundingClientRect();
+    const noWidth = noBtn.offsetWidth;
+    const noHeight = noBtn.offsetHeight;
+
+    // Get the center of the Yes button as our "Anchor"
+    const centerX = yesRect.left + yesRect.width / 2;
+    const centerY = yesRect.top + yesRect.height / 2;
+
+    let x, y;
+    let safe = false;
+
+    // Try finding a spot until it's "Safe" (not overlapping and on-screen)
+    while (!safe) {
+        // 1. Pick a random angle (0 to 360 degrees)
+        const angle = Math.random() * Math.PI * 2;
+        
+        // 2. Pick a distance between 150px and 300px (to "hover around")
+        const distance = 150 + Math.random() * 150;
+
+        // 3. Calculate target X and Y relative to the Yes Button
+        x = centerX + Math.cos(angle) * distance - noWidth / 2;
+        y = centerY + Math.sin(angle) * distance - noHeight / 2;
+
+        // 4. CLAMP: Ensure the button stays within the visible screen
+        x = Math.max(10, Math.min(x, window.innerWidth - noWidth - 10));
+        y = Math.max(10, Math.min(y, window.innerHeight - noHeight - 10));
+
+        // 5. Check: Ensure we aren't accidentally landing on the Yes button
+        const overlapsYes = (
+            x < yesRect.right + 20 &&
+            x + noWidth > yesRect.left - 20 &&
+            y < yesRect.bottom + 20 &&
+            y + noHeight > yesRect.top - 20
+        );
+
+        if (!overlapsYes) safe = true;
+    }
+
+    noBtn.style.position = 'fixed';
+    noBtn.style.left = `${x}px`;
+    noBtn.style.top = `${y}px`;
+
+    // Yes button growth (Capped at 1.8x)
+    if (yesScale < 1.8) {
+        yesScale += 0.15;
+        yesBtn.style.transform = `scale(${yesScale})`;
+    }
+
+    // No button shrink (starts after 5s, capped at 0.5x)
+    const secondsPassed = (Date.now() - startTime) / 1000;
+    if (secondsPassed > 5 && noScale > 0.5) {
+        noScale -= 0.1;
+        noBtn.style.transform = `scale(${noScale})`;
+    }
+};
+
+noBtn.addEventListener('mouseover', moveNoButton);
+noBtn.addEventListener('click', moveNoButton);
+
+yesBtn.addEventListener('click', () => {
+    quiz.style.display = 'none';
+    celebration.style.display = 'block';
+    document.body.style.background = "#ff758c";
+});
+    </script>
+</body>
+</html>
